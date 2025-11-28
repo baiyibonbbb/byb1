@@ -3,12 +3,12 @@ import { useState, useEffect, useRef } from 'react';
 
 export default function HomePage() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isVisible, setIsVisible] = useState({});
-  const [activeCategory, setActiveCategory] = useState(null);
+  const [isVisible, setIsVisible] = useState<Record<string, boolean>>({});
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipContent, setTooltipContent] = useState('');
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-  const buttonRef = useRef(null);
+  const buttonRef = useRef<HTMLAnchorElement>(null);
 
   // 分类数据
   const categories = [
@@ -20,7 +20,7 @@ export default function HomePage() {
 
   // 鼠标跟踪效果
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({
         x: e.clientX / window.innerWidth - 0.5,
         y: e.clientY / window.innerHeight - 0.5
@@ -55,22 +55,24 @@ export default function HomePage() {
   useEffect(() => {
     // 为所有锚点链接添加平滑滚动
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
+      anchor.addEventListener('click', (e) => {
         e.preventDefault();
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          targetElement.scrollIntoView({ behavior: 'smooth' });
+        const targetId = (e.currentTarget as HTMLElement).getAttribute('href');
+        if (targetId) {
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+          }
         }
       });
     });
 
     // 为按钮添加波纹效果处理函数
-    const handleButtonClick = (e) => {
+    const handleButtonClick = (e: MouseEvent) => {
       if (!buttonRef.current) return;
       
       const button = buttonRef.current;
-      const circle = button.querySelector('span:last-child');
+      const circle = button.querySelector('span:last-child') as HTMLElement;
       if (!circle) return;
       
       // 计算点击位置
@@ -118,8 +120,8 @@ export default function HomePage() {
   }, []);
 
   // 处理分类标签悬停事件
-  const handleCategoryHover = (category, event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
+  const handleCategoryHover = (category: { description: string }, event: React.MouseEvent) => {
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     setTooltipContent(category.description);
     setTooltipPosition({
       x: rect.left + rect.width / 2,
@@ -134,7 +136,7 @@ export default function HomePage() {
   };
 
   // 处理分类标签点击事件
-  const handleCategoryClick = (category) => {
+  const handleCategoryClick = (category: { id: string, name: string }) => {
     setActiveCategory(category.id);
     // 这里可以添加更多的分类交互逻辑
     console.log('点击了分类:', category.name);
@@ -480,7 +482,6 @@ export default function HomePage() {
             transform: isVisible['main-card'] ? 'translateY(0)' : 'translateY(20px)',
             transition: 'opacity 0.5s ease 0.9s, transform 0.5s ease 0.9s',
             cursor: 'pointer',
-            transform: 'translateZ(0)',
             boxShadow: '0 4px 6px -1px rgba(5, 150, 105, 0.1), 0 2px 4px -1px rgba(5, 150, 105, 0.06)'
           }}
           className="ingredients-button"
