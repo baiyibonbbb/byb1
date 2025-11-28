@@ -301,8 +301,42 @@ export default function IngredientsPage() {
         backgroundColor: '#059669',
         color: 'white',
         padding: '3rem 2rem',
-        textAlign: 'center'
+        textAlign: 'center',
+        position: 'relative'
       }}>
+        {/* 返回首页按钮 */}
+        <button
+          onClick={() => window.location.href = '/'}
+          style={{
+            position: 'absolute',
+            top: '1rem',
+            right: '2rem',
+            padding: '0.5rem 1rem',
+            backgroundColor: '#10b981',
+            color: 'white',
+            border: 'none',
+            borderRadius: '0.375rem',
+            cursor: 'pointer',
+            fontSize: '0.9rem',
+            fontWeight: 500,
+            transition: 'background-color 0.2s ease, transform 0.1s ease',
+            zIndex: 10
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#059669';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#10b981';
+          }}
+          onMouseDown={(e) => {
+            e.currentTarget.style.transform = 'scale(0.98)';
+          }}
+          onMouseUp={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+          }}
+        >
+          返回首页
+        </button>
         <h1 style={{
           fontSize: '2.5rem',
           fontWeight: 700,

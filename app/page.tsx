@@ -464,9 +464,7 @@ export default function HomePage() {
         
         {/* 行动按钮 */}
         <a 
-          href="https://baiyibonbbb.tetn.xyz/ingredients"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/ingredients"
           ref={buttonRef}
           style={{
             display: 'inline-block',
