@@ -152,7 +152,7 @@ export default function IngredientsPage() {
       id: '10',
       name: '卵磷脂',
       category: '乳化剂',
-      description: '天然磷脂混合物，主要成分为磷脂酰胆碱',
+      description: '是一种天然磷脂混合物，其主要成分为磷脂酰胆碱',
       safetyLevel: 'safe',
       alternativeNames: ['大豆卵磷脂', 'E322'],
       commonUses: ['巧克力', '冰淇淋', '人造黄油', '烘焙食品'],
@@ -165,7 +165,7 @@ export default function IngredientsPage() {
       id: '11',
       name: '焦糖色素',
       category: '色素',
-      description: '通过加热糖类物质产生的棕色色素',
+      description: '通过加热糖类物质并经美拉德反应、焦糖化反应生成的棕色天然色素',
       safetyLevel: 'moderate',
       alternativeNames: ['焦糖色', 'E150'],
       commonUses: ['可乐', '酱油', '糖果', '烘焙食品'],
@@ -178,7 +178,7 @@ export default function IngredientsPage() {
       id: '12',
       name: '二氧化钛',
       category: '色素',
-      description: '白色无机颜料，提供不透明性和白度',
+      description: '白色无机颜料，核心作用是为产品提供高不透明性和白度',
       safetyLevel: 'avoid',
       alternativeNames: ['钛白粉', 'E171'],
       commonUses: ['糖果', '口香糖', '美白牙膏', '防晒霜'],
@@ -603,13 +603,29 @@ export default function IngredientsPage() {
                         borderRadius: '0.375rem',
                         fontSize: '1rem',
                         outline: 'none',
-                        transition: 'border-color 0.2s'
+                        transition: 'all 0.2s ease',
+                        backgroundColor: 'white',
+                        boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
                       }}
                     onFocus={(e) => {
-                        e.target.style.borderColor = '#047857';
+                        e.target.style.borderColor = '#059669';
+                        e.target.style.boxShadow = '0 0 0 3px rgba(5, 150, 105, 0.1)';
                       }}
                     onBlur={(e) => {
                       e.target.style.borderColor = '#e5e7eb';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
+                    }}
+                    onMouseEnter={(e) => {
+                      const target = e.target as HTMLElement;
+                      if (!target.matches(':focus')) {
+                        target.style.borderColor = '#94a3b8';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      const target = e.target as HTMLElement;
+                      if (!target.matches(':focus')) {
+                        target.style.borderColor = '#d1d5db';
+                      }
                     }}
                   />
                 </div>
@@ -621,14 +637,39 @@ export default function IngredientsPage() {
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
                     style={{
-                      padding: '0.75rem 1rem',
+                      padding: '0.75rem 2rem 0.75rem 1rem',
                       border: '2px solid #d1d5db',
                       borderRadius: '0.375rem',
                       fontSize: '1rem',
                       backgroundColor: 'white',
                       outline: 'none',
-                      color: 'black', // 将字体颜色设置为黑色
-                      cursor: 'pointer'
+                      color: 'black',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s ease',
+                      appearance: 'none',
+                      backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"%234b5563\"%3E%3Cpath stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"/%3E%3C/svg%3E")',
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'right 0.75rem center',
+                      backgroundSize: '16px 16px',
+                      minWidth: '180px'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = '#059669';
+                      e.currentTarget.style.boxShadow = '0 0 0 3px rgba(5, 150, 105, 0.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!e.currentTarget.matches(':focus')) {
+                        e.currentTarget.style.borderColor = '#d1d5db';
+                        e.currentTarget.style.boxShadow = 'none';
+                      }
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.borderColor = '#047857';
+                      e.currentTarget.style.boxShadow = '0 0 0 3px rgba(5, 150, 105, 0.2)';
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.borderColor = '#d1d5db';
+                      e.currentTarget.style.boxShadow = 'none';
                     }}
                   >
                     <option value="all">所有分类</option>
