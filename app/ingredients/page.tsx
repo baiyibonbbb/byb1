@@ -11,6 +11,9 @@ export default function IngredientsPage() {
   const [showCategoryInfo, setShowCategoryInfo] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
+
+  // 移除图片路径函数，不再使用图片
+  
   // 增强的配料数据模型
   interface Ingredient {
     id: string;
@@ -91,7 +94,7 @@ export default function IngredientsPage() {
       healthImpact: '食品级使用通常安全，但大量摄入可能引起胃肠道不适。有少量过敏反应报告。',
       natural: false,
       origin: '人工合成化合物',
-      notes: '欧盟允许使用，但需在配料表中标注'
+      notes: '欧盟允许使用，使用时需重点关注过敏风险、用法用量合规标注要求'
     },
     {
       id: '6',
@@ -117,7 +120,7 @@ export default function IngredientsPage() {
       healthImpact: '几乎不被人体吸收，热量极低，不影响血糖和胰岛素水平，适合糖尿病患者和减肥人群。过量可能引起轻度胃肠不适。',
       natural: true,
       origin: '天然存在于水果、蔬菜和发酵食品中',
-      notes: '相比其他糖醇，引起腹泻的阈值更高'
+      notes: '腹泻阈值高于多数同类糖醇，使用时需关注用量控制、适用人群及合规要求'
     },
     {
       id: '8',
@@ -464,144 +467,120 @@ export default function IngredientsPage() {
                   padding: '0 1rem', // 响应式内边距
                   justifyContent: 'center' // 居中对齐
                 }}>
-                <h3 style={{ fontSize: '1rem', fontWeight: 600, color: '#1f2937', width: '100%', marginBottom: '0.5rem' }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#064e3b', width: '100%', marginBottom: '1rem' }}>
                   按分类浏览：
                 </h3>
-                {categories.filter(cat => cat !== 'all').map((category, index) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      padding: '1rem',
-                      border: selectedCategory === category ? '2px solid #059669' : '2px solid #d1d5db',
-                      borderRadius: '0.5rem',
-                      backgroundColor: selectedCategory === category ? '#f0fdf4' : 'white',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease',
-                      minWidth: '80px',
-                      opacity: '0',
-                      animationDelay: `${index * 0.1}s`,
-                      animation: 'fadeIn 0.3s ease forwards'
-                    }}
-                    onMouseEnter={(e) => {
-                      if (selectedCategory !== category) {
-                        e.currentTarget.style.borderColor = '#059669';
-                        e.currentTarget.style.backgroundColor = '#f0fdf4';
-                        e.currentTarget.style.transform = 'translateY(-2px)';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (selectedCategory !== category) {
-                        e.currentTarget.style.borderColor = '#d1d5db';
-                        e.currentTarget.style.backgroundColor = 'white';
-                        e.currentTarget.style.transform = 'translateY(0)';
-                      }
-                    }}
-                  >
-                    {/* 分类图片容器 - 添加懒加载和加载状态 */}
-                    <div style={{ position: 'relative', width: '40px', height: '40px' }}>
-                      <img
-                        src={`/image/${category}.png`}
-                        alt={category}
-                        loading="lazy"
-                        style={{
-                          width: '40px',
-                          height: '40px',
-                          objectFit: 'contain',
-                          transition: 'opacity 0.3s ease',
-                          opacity: '0'
-                        }}
-                        onLoad={(e) => e.currentTarget.style.opacity = '1'}
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none';
-                          const parent = e.currentTarget.parentNode;
-                          const fallback = document.createElement('div');
-                          fallback.textContent = category[0];
-                          fallback.style.cssText = `
-                              width: 40px;
-                              height: 40px;
-                              backgroundColor: #059669;
-                              borderRadius: 50%;
-                              display: flex;
-                              alignItems: center;
-                              justifyContent: center;
-                              color: white;
-                              fontSize: 1rem;
-                              fontWeight: bold;
-                            `;
-                            if (parent) {
-                              parent.appendChild(fallback);
-                            }
-                        }}
-                      />
-                      {/* 加载占位符 */}
-                      <div style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: '#f3f4f6',
-                        borderRadius: '50%',
+                {categories.filter(cat => cat !== 'all').map((category, index) => {
+                  return (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      style={{
                         display: 'flex',
+                        flexDirection: 'column',
                         alignItems: 'center',
+                        gap: '0.75rem',
+                        padding: '1.25rem',
+                        border: selectedCategory === category ? '2px solid #059669' : '2px solid #d1d5db',
+                        borderRadius: '0.5rem',
+                        backgroundColor: selectedCategory === category ? '#f0fdf4' : 'white',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        minWidth: '120px',
+                        opacity: '0',
+                        animationDelay: `${index * 0.1}s`,
+                        animation: 'fadeIn 0.3s ease forwards',
+                        minHeight: '150px',
                         justifyContent: 'center',
-                        fontSize: '0.7rem',
-                        color: '#9ca3af'
-                      }}>
-                        <div style={{ width: '16px', height: '16px', border: '2px solid #e5e7eb', borderTop: '2px solid #059669', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
-                      </div>
-                    </div>
-                    
-                    <span style={{ fontSize: '0.9rem', color: '#1f2937', fontWeight: 500 }}>
-                      {category}
-                    </span>
-                  </button>
-                ))}
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                      }}
+                      onMouseEnter={(e) => {
+                        if (selectedCategory !== category) {
+                          e.currentTarget.style.borderColor = '#059669';
+                          e.currentTarget.style.backgroundColor = '#f0fdf4';
+                          e.currentTarget.style.transform = 'translateY(-2px)';
+                          e.currentTarget.style.boxShadow = '0 4px 6px rgba(5, 150, 105, 0.1)';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (selectedCategory !== category) {
+                          e.currentTarget.style.borderColor = '#d1d5db';
+                          e.currentTarget.style.backgroundColor = 'white';
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)';
+                        }
+                      }}
+                    >
+                      {/* 分类图标 - 使用SVG图片 */}
+                      <img 
+                        src={`/image/${category}.svg`} 
+                        alt={category} 
+                        style={{ 
+                          width: '80px', 
+                          height: '80px', 
+                          borderRadius: '0.375rem',
+                          objectFit: 'contain',
+                          padding: '8px'
+                        }} 
+                      />
+                      
+                      <span style={{ fontSize: '1rem', color: '#1f2937', fontWeight: 600, textAlign: 'center' }}>
+                        {category}
+                      </span>
+                    </button>
+                  );
+                })}
                 <button
                   onClick={() => setSelectedCategory('all')}
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    gap: '0.5rem',
-                    padding: '1rem',
+                    gap: '0.75rem',
+                    padding: '1.25rem',
                     border: selectedCategory === 'all' ? '2px solid #059669' : '2px solid #d1d5db',
                     borderRadius: '0.5rem',
                     backgroundColor: selectedCategory === 'all' ? '#f0fdf4' : 'white',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
-                    minWidth: '80px'
+                    minWidth: '120px',
+                    opacity: '0',
+                    animation: 'fadeIn 0.3s ease forwards',
+                    minHeight: '150px',
+                    justifyContent: 'center',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
                   }}
                   onMouseEnter={(e) => {
                     if (selectedCategory !== 'all') {
                       e.currentTarget.style.borderColor = '#059669';
                       e.currentTarget.style.backgroundColor = '#f0fdf4';
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                      e.currentTarget.style.boxShadow = '0 4px 6px rgba(5, 150, 105, 0.1)';
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (selectedCategory !== 'all') {
                       e.currentTarget.style.borderColor = '#d1d5db';
                       e.currentTarget.style.backgroundColor = 'white';
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)';
                     }
                   }}
                 >
-                  <div style={{
-                    width: '40px',
-                    height: '40px',
-                    backgroundColor: '#e5e7eb',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    <span style={{ fontSize: '1.2rem', color: '#1f2937' }}>全</span>
-                  </div>
-                  <span style={{ fontSize: '0.9rem', color: '#1f2937', fontWeight: 500 }}>
+                  {/* 分类图标 - 使用SVG图片 */}
+                    <img 
+                      src="/image/全部.svg" 
+                      alt="全部" 
+                      style={{ 
+                        width: '80px', 
+                        height: '80px', 
+                        borderRadius: '0.375rem',
+                        objectFit: 'contain',
+                        padding: '8px'
+                      }} 
+                    />
+                  
+                  <span style={{ fontSize: '1rem', color: '#1f2937', fontWeight: 600, textAlign: 'center' }}>
                     全部
                   </span>
                 </button>
@@ -648,6 +627,7 @@ export default function IngredientsPage() {
                       fontSize: '1rem',
                       backgroundColor: 'white',
                       outline: 'none',
+                      color: 'black', // 将字体颜色设置为黑色
                       cursor: 'pointer'
                     }}
                   >
@@ -715,7 +695,7 @@ export default function IngredientsPage() {
                       padding: '1.5rem',
                       borderBottom: '1px solid #f3f4f6'
                     }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                         <h3 style={{
                           fontSize: '1.25rem',
                           fontWeight: 700,
@@ -736,53 +716,20 @@ export default function IngredientsPage() {
                         </span>
                       </div>
                       
-                      <div style={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <div style={{ position: 'relative', width: '24px', height: '24px' }}>
-                          <img
-                            src={`/image/${ingredient.category}.png`}
-                            alt={ingredient.category}
-                            loading="lazy"
-                            style={{
-                              width: '24px',
-                              height: '24px',
-                              objectFit: 'contain',
-                              verticalAlign: 'middle',
-                              transition: 'opacity 0.3s ease',
-                              opacity: '0'
-                            }}
-                            onLoad={(e) => e.currentTarget.style.opacity = '1'}
-                            onError={(e) => {
-                              e.currentTarget.style.display = 'none';
-                              const parent = e.currentTarget.parentNode;
-                              const fallback = document.createElement('div');
-                              fallback.textContent = ingredient.category[0];
-                              fallback.style.cssText = `
-                                  width: 24px;
-                                  height: 24px;
-                                  backgroundColor: #059669;
-                                  borderRadius: 50%;
-                                  display: flex;
-                                  alignItems: center;
-                                  justifyContent: center;
-                                  color: white;
-                                  fontSize: 0.7rem;
-                                  fontWeight: bold;
-                                `;
-                                if (parent) {
-                                  parent.appendChild(fallback);
-                                }
-                            }}
-                          />
-                          {/* 加载占位符 */}
-                          <div style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            backgroundColor: '#f3f4f6',
-                            borderRadius: '50%'
-                          }}></div>
+                      <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
+                        <div style={{
+                          width: '24px',
+                          height: '24px',
+                          borderRadius: '50%',
+                          backgroundColor: '#10b981',
+                          color: 'white',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          fontSize: '12px',
+                          fontWeight: 'bold'
+                        }}>
+                          {ingredient.category.charAt(0)}
                         </div>
                         <span style={{
                           backgroundColor: '#e5e7eb',
@@ -800,7 +747,8 @@ export default function IngredientsPage() {
                         color: '#1f2937',
                         lineHeight: 1.6,
                         marginBottom: '1rem',
-                        fontSize: '1rem'
+                        fontSize: '1rem',
+                        textAlign: 'center'
                       }}>
                         {highlightSearchTerm(ingredient.description)}
                       </p>
@@ -815,7 +763,8 @@ export default function IngredientsPage() {
                           <p style={{
                             color: '#4b5563',
                             fontSize: '0.9rem',
-                            lineHeight: 1.5
+                            lineHeight: 1.5,
+                            textAlign: 'center'
                           }}>
                             <strong>注意：</strong>{highlightSearchTerm(ingredient.notes)}
                           </p>
@@ -825,12 +774,22 @@ export default function IngredientsPage() {
                       {/* 查看详情提示 */}
                       <div style={{
                         marginTop: '1rem',
-                        textAlign: 'right'
+                        textAlign: 'center',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: '100%',
+                        paddingLeft: '0.5rem',
+                        paddingRight: '0.5rem'
                       }}>
                         <span style={{
                           fontSize: '0.875rem',
                           color: '#059669',
-                          fontWeight: 500
+                          fontWeight: 500,
+                          textTransform: 'none',
+                          letterSpacing: 'normal',
+                          textAlign: 'center',
+                          display: 'inline-block'
                         }}>
                           查看详情 →
                         </span>
@@ -859,15 +818,17 @@ export default function IngredientsPage() {
               {/* 配料分类说明切换按钮 */}
               <div style={{
                 display: 'flex',
-                justifyContent: 'space-between',
+                flexDirection: 'column',
                 alignItems: 'center',
+                gap: '1rem',
                 marginBottom: '1.5rem'
               }}>
                 <h3 style={{
                   fontSize: '1.25rem',
                   fontWeight: 600,
                   color: '#111827',
-                  margin: 0
+                  margin: 0,
+                  textAlign: 'center'
                 }}>
                   配料分类说明
                 </h3>
@@ -975,22 +936,15 @@ export default function IngredientsPage() {
               <h3 style={{
                 fontSize: '1.25rem',
                 fontWeight: 600,
-                color: '#111827',
+                color: '#000000',
                 marginTop: '2rem',
-                marginBottom: '1rem'
-              }}>
-                安全等级说明
-              </h3>
-              <h3 style={{
-                fontSize: '1.25rem',
-                fontWeight: 600,
-                color: '#111827',
-                marginBottom: '1rem'
+                marginBottom: '1rem',
+                textAlign: 'center'
               }}>
                 安全等级说明
               </h3>
               
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+              <div style={{ display: 'flex', flexWrap: 'nowrap', justifyContent: 'center', width: '100%', gap: '1rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <span style={{
                     backgroundColor: '#d1fae5',
@@ -999,7 +953,7 @@ export default function IngredientsPage() {
                     borderRadius: '50%',
                     marginRight: '0.5rem'
                   }}></span>
-                  <span><strong>安全：</strong>正常使用对健康无害</span>
+                  <span style={{ color: '#000000' }}><strong>安全：</strong>正常使用对健康无害</span>
                 </div>
                 
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -1010,7 +964,7 @@ export default function IngredientsPage() {
                     borderRadius: '50%',
                     marginRight: '0.5rem'
                   }}></span>
-                  <span><strong>谨慎：</strong>适量使用一般安全</span>
+                  <span style={{ color: '#000000' }}><strong>谨慎：</strong>适量使用一般安全</span>
                 </div>
                 
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -1021,7 +975,7 @@ export default function IngredientsPage() {
                     borderRadius: '50%',
                     marginRight: '0.5rem'
                   }}></span>
-                  <span><strong>避免：</strong>尽量避免或减少摄入</span>
+                  <span style={{ color: '#000000' }}><strong>避免：</strong>尽量避免或减少摄入</span>
                 </div>
               </div>
             </div>
@@ -1058,6 +1012,8 @@ export default function IngredientsPage() {
                   {getSafetyLevelText(currentIngredient.safetyLevel)}
                 </span>
               </div>
+              
+              {/* 配料标识区域 - 已移除首字显示效果 */}
               
               <div style={{ marginBottom: '2rem' }}>
                 <div style={{ marginBottom: '1.5rem' }}>

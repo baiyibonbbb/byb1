@@ -1,0 +1,7 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="80" height="80" rx="6" fill="#059669"/>
+  <path d="M40 25C44.4183 25 48 28.5817 48 33C48 37.4183 44.4183 41 40 41C35.5817 41 32 37.4183 32 33C32 28.5817 35.5817 25 40 25Z" fill="white"/>
+  <path d="M40 45C42.7614 45 45 47.2386 45 50V55H35V50C35 47.2386 37.2386 45 40 45Z" fill="white"/>
+  <circle cx="40" cy="33" r="5" fill="#059669"/>
+  <text x="40" y="67" fill="white" font-size="12" font-weight="bold" text-anchor="middle">甜</text>
+</svg>

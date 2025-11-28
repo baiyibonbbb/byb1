@@ -1,0 +1,9 @@
+<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="80" height="80" rx="6" fill="#059669"/>
+  <path d="M30 30L50 30M30 40L45 40M30 50L50 50" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="35" cy="35" r="4" fill="white"/>
+  <circle cx="45" cy="45" r="3" fill="white"/>
+  <circle cx="35" cy="55" r="5" fill="white"/>
+  <circle cx="45" cy="35" r="2" fill="white"/>
+  <text x="40" y="67" fill="white" font-size="12" font-weight="bold" text-anchor="middle">乳</text>
+</svg>

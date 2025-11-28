@@ -3,6 +3,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #059669;
+  --primary-light: #10b981;
+  --primary-dark: #047857;
+  --accent: #3b82f6;
+  --accent-light: #60a5fa;
 }
 
 @theme inline {
@@ -12,15 +17,243 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* 炫酷动画定义 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--primary);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--primary-light), 0 0 30px var(--primary);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 全局样式增强 */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* 自定义类样式 */
+.fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+.glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  background-size: 200% 200%;
+  animation: gradientShift 3s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.home-container {
+  animation: fadeInUp 0.8s ease-out forwards;
+  position: relative;
+}
+
+.home-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.home-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0));
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* 按钮波纹效果 */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.6);
+  transform: scale(0);
+  animation: ripple-effect 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes ripple-effect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* 循环动画效果 */
+@keyframes rotateCycle {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.05);
+  }
+}
+
+.category-icon:nth-child(1) {
+  animation: rotateCycle 4s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.category-icon:nth-child(2) {
+  animation: rotateCycle 4s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.category-icon:nth-child(3) {
+  animation: rotateCycle 4s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.category-icon:nth-child(4) {
+  animation: rotateCycle 4s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+/* 确保甜字不覆盖树叶 */
+.category-icon:nth-child(1) {
+  position: relative;
+  z-index: 3;
+  margin-left: 15px; /* 调整位置避免覆盖树叶 */
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* 响应式调整 */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+  
+  ::-webkit-scrollbar-track {
+    background: #1a1a1a;
+  }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 移动设备响应式样式 */
+@media (max-width: 640px) {
+  .home-container {
+    padding: 1.5rem !important;
+    border-radius: 16px !important;
+    border-width: 1.5px !important;
+  }
+  
+  /* 装饰元素响应式调整 */
+  .decoration-item {
+    transform: scale(0.7);
+    opacity: 0.5 !important;
+  }
+  
+  /* 调整渐变文本大小 */
+  .gradient-text {
+    font-size: 1.8rem !important;
+  }
+  
+  /* 按钮响应式调整 */
+  .ingredients-button {
+    padding: 0.75rem 2rem !important;
+    font-size: 1rem !important;
+  }
+}
+
+/* 平板设备响应式样式 */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .home-container {
+    padding: 2rem !important;
+  }
+  
+  .decoration-item {
+    transform: scale(0.85);
+    opacity: 0.6 !important;
+  }
 }
