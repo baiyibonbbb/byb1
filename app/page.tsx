@@ -462,9 +462,11 @@ export default function HomePage() {
           了解食品成分，守护您和家人的健康
         </p>
         
-        {/* 行动按钮 */}
+        {/* 行动按钮 - 环境感知的跳转逻辑 */}
         <a 
-          href="/ingredients"
+          href={process.env.NODE_ENV === 'production' ? 'https://baiyibonbbb.tetn.xyz/ingredients' : '/ingredients'}
+          target={process.env.NODE_ENV === 'production' ? '_blank' : '_self'}
+          rel={process.env.NODE_ENV === 'production' ? 'noopener noreferrer' : undefined}
           ref={buttonRef}
           style={{
             display: 'inline-block',
