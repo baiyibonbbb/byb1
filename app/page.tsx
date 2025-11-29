@@ -5,9 +5,6 @@ export default function HomePage() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState<Record<string, boolean>>({});
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [showTooltip, setShowTooltip] = useState(false);
-  const [tooltipContent, setTooltipContent] = useState('');
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const buttonRef = useRef<HTMLAnchorElement>(null);
 
   // 分类数据
@@ -119,21 +116,7 @@ export default function HomePage() {
     };
   }, []);
 
-  // 处理分类标签悬停事件
-  const handleCategoryHover = (category: { description: string }, event: React.MouseEvent) => {
-    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
-    setTooltipContent(category.description);
-    setTooltipPosition({
-      x: rect.left + rect.width / 2,
-      y: rect.top - 10
-    });
-    setShowTooltip(true);
-  };
 
-  // 处理分类标签离开事件
-  const handleCategoryLeave = () => {
-    setShowTooltip(false);
-  };
 
   // 处理分类标签点击事件
   const handleCategoryClick = (category: { id: string, name: string }) => {
@@ -273,43 +256,7 @@ export default function HomePage() {
         ></div>
       </div>
 
-      {/* 分类提示框 */}
-      {showTooltip && (
-        <div
-          style={{
-            position: 'fixed',
-            left: `${tooltipPosition.x}px`,
-            top: `${tooltipPosition.y}px`,
-            transform: 'translate(-50%, -100%) translateY(-10px)',
-            backgroundColor: 'rgba(0, 0, 0, 0.85)',
-            color: 'white',
-            padding: '0.75rem 1rem',
-            borderRadius: '8px',
-            fontSize: '0.9rem',
-            whiteSpace: 'nowrap',
-            zIndex: 1000,
-            pointerEvents: 'none',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-            opacity: 0.9,
-            animation: 'fadeInUp 0.2s ease-out forwards'
-          }}
-        >
-          {tooltipContent}
-          <div 
-            style={{
-              position: 'absolute',
-              bottom: '-6px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: 0,
-              height: 0,
-              borderLeft: '6px solid transparent',
-              borderRight: '6px solid transparent',
-              borderTop: '6px solid rgba(0, 0, 0, 0.85)'
-            }}
-          ></div>
-        </div>
-      )}
+
 
       {/* 主内容卡片 */}
       <div 
@@ -360,7 +307,6 @@ export default function HomePage() {
             width: 'clamp(70px, 18vw, 100px)', // 缩小尺寸
             height: 'clamp(70px, 18vw, 100px)', // 缩小尺寸
             backgroundColor: activeCategory === category.id ? '#047857' : '#059669',
-            borderRadius: '0.375rem',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -375,18 +321,17 @@ export default function HomePage() {
             overflow: 'hidden',
             zIndex: activeCategory === category.id ? 2 : 1,
             transformStyle: 'preserve-3d',
-            perspective: '1000px'
+            perspective: '1000px',
+            borderRadius: '50%'
           }}
                 className={`category-icon ${activeCategory === category.id ? 'pulse' : ''}`}
                 onMouseEnter={(e) => {
-                  handleCategoryHover(category, e);
                   e.currentTarget.style.transform = 'scale(1.12) translateY(-5px)';
                   e.currentTarget.style.boxShadow = activeCategory === category.id 
                     ? '0 12px 30px rgba(5, 150, 105, 0.6)' 
                     : '0 10px 25px rgba(5, 150, 105, 0.5)';
                 }}
                 onMouseLeave={(e) => {
-                  handleCategoryLeave();
                   e.currentTarget.style.transform = 'scale(1) translateY(0)';
                   e.currentTarget.style.boxShadow = activeCategory === category.id 
                     ? '0 8px 25px rgba(5, 150, 105, 0.5)' 
@@ -400,17 +345,24 @@ export default function HomePage() {
                 }}
                 onClick={() => handleCategoryClick(category)}
               >
-                {/* 分类图片 */}
-                <img 
-                  src={`/image/${category.id}.svg`} 
-                  alt={category.name} 
+                {/* 分类文字 */}
+                <div 
                   style={{ 
                     width: '100%', 
                     height: '100%', 
-                    objectFit: 'contain',
-                    padding: '8px'
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    fontSize: '1rem',
+                    fontWeight: 'bold',
+                    color: '#030712',
+                    padding: '8px',
+                    textShadow: '0 1px 2px rgba(0,0,0,0.1)'
                   }} 
-                />
+                >
+                  {/* 使用索引显示对应的四个字 */}
+                  {['健康', '安全', '卫生', '合格'][index % 4]}
+                </div>
                 {/* 悬停时的涟漪效果 */}
                 <div 
                   className="ripple"
