@@ -632,7 +632,7 @@ export default function IngredientsPage() {
                   border: '2px solid #d1d5db',
                   borderRadius: '0.375rem',
                   fontSize: '1rem',
-                  backgroundColor: 'white',
+                  backgroundColor: '#059669',
                   color: 'black',
                   minWidth: '180px',
                   textAlign: 'center'
@@ -919,7 +919,6 @@ export default function IngredientsPage() {
                     <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}><a href="https://baike.baidu.com/item/%E9%98%B2%E8%85%90%E5%89%82?fromModule=lemma_search-box" target="_blank" rel="noopener noreferrer" style={{ color: '#059669', textDecoration: 'underline' }}>防腐剂</a></h4>
                     <p style={{ margin: 0, color: '#4b5563', lineHeight: 1.6, fontSize: '0.95rem' }}>
                       防腐剂用于延长食品保质期，抑制微生物生长。常见的防腐剂包括山梨酸钾、苯甲酸钠和亚硝酸盐等。
-                      虽然在规定用量内使用通常安全，但某些防腐剂如亚硝酸盐可能与癌症风险相关，建议优先选择天然防腐方法保存的食品。
                     </p>
                   </div>
                   
@@ -951,7 +950,7 @@ export default function IngredientsPage() {
                     <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}><a href="https://baike.baidu.com/item/%E8%B0%83%E5%91%B3%E5%89%82/9651964" target="_blank" rel="noopener noreferrer" style={{ color: '#059669', textDecoration: 'underline' }}>调味剂</a></h4>
                     <p style={{ margin: 0, color: '#4b5563', lineHeight: 1.6, fontSize: '0.95rem' }}>
                       调味剂用于增强食品的味道，如谷氨酸钠（味精）。大多数调味剂在正常使用量下安全，但少数人可能对其敏感。
-                      建议适量使用调味剂，培养对天然食物原味的适应，减少对人工调味的依赖。
+                      建议适量使用调味剂，培养对天然食物原味反应，减少对人工调味的依赖。
                     </p>
                   </div>
                 </div>
