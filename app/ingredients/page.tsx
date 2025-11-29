@@ -622,48 +622,10 @@ export default function IngredientsPage() {
               <div style={{
                 display: 'flex',
                 gap: '1rem',
-                flexWrap: 'wrap'
+                flexWrap: 'wrap',
+                alignItems: 'center'
               }}>
-                <div style={{ flex: '1 1 300px' }}>
-                  <input
-                    type="text"
-                    placeholder="搜索配料名称、描述、别名..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{
-                        width: '100%',
-                        padding: '0.75rem 1rem',
-                        border: '2px solid #d1d5db',
-                        borderRadius: '0.375rem',
-                        fontSize: '1rem',
-                        outline: 'none',
-                        transition: 'all 0.2s ease',
-                        backgroundColor: 'white',
-                        boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
-                      }}
-                    onFocus={(e) => {
-                        e.target.style.borderColor = '#059669';
-                        e.target.style.boxShadow = '0 0 0 3px rgba(5, 150, 105, 0.1)';
-                      }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = '#e5e7eb';
-                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
-                    }}
-                    onMouseEnter={(e) => {
-                      const target = e.target as HTMLElement;
-                      if (!target.matches(':focus')) {
-                        target.style.borderColor = '#94a3b8';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      const target = e.target as HTMLElement;
-                      if (!target.matches(':focus')) {
-                        target.style.borderColor = '#d1d5db';
-                      }
-                    }}
-                  />
-                </div>
-                
+                {/* select元素移到左侧 */}
                 <div style={{ flex: '0 0 auto' }}>
                   <select
                     aria-label="选择配料分类"
@@ -711,6 +673,47 @@ export default function IngredientsPage() {
                       <option key={category} value={category}>{category}</option>
                     ))}
                   </select>
+                </div>
+                
+                {/* input元素移到右侧并补齐剩余空间 */}
+                <div style={{ flex: '1 1 300px', width: 'calc(100% - 190px)' }}>
+                  <input
+                    type="text"
+                    placeholder="搜索配料名称、描述、别名..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{
+                        width: '100%',
+                        padding: '0.75rem 1rem',
+                        border: '2px solid #d1d5db',
+                        borderRadius: '0.375rem',
+                        fontSize: '1rem',
+                        outline: 'none',
+                        transition: 'all 0.2s ease',
+                        backgroundColor: 'white',
+                        boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+                      }}
+                    onFocus={(e) => {
+                        e.target.style.borderColor = '#059669';
+                        e.target.style.boxShadow = '0 0 0 3px rgba(5, 150, 105, 0.1)';
+                      }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = '#e5e7eb';
+                      e.target.style.boxShadow = '0 1px 2px 0 rgba(0, 0, 0, 0.05)';
+                    }}
+                    onMouseEnter={(e) => {
+                      const target = e.target as HTMLElement;
+                      if (!target.matches(':focus')) {
+                        target.style.borderColor = '#94a3b8';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      const target = e.target as HTMLElement;
+                      if (!target.matches(':focus')) {
+                        target.style.borderColor = '#d1d5db';
+                      }
+                    }}
+                  />
                 </div>
               </div>
               
@@ -939,7 +942,7 @@ export default function IngredientsPage() {
                   borderRadius: '0.375rem'
                 }}>
                   <div style={{ marginBottom: '1.5rem' }}>
-                    <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}>甜味剂</h4>
+                    <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}><a href="https://baike.baidu.com/item/%E7%94%9C%E5%91%B3%E5%89%82/2532096?fr=aladdin" target="_blank" rel="noopener noreferrer" style={{ color: '#059669', textDecoration: 'underline' }}>甜味剂</a></h4>
                     <p style={{ margin: 0, color: '#4b5563', lineHeight: 1.6, fontSize: '0.95rem' }}>
                       甜味剂是替代蔗糖等传统糖类的食品添加剂，可分为天然甜味剂和人工合成甜味剂。
                       天然甜味剂如赤藓糖醇通常安全性较高，而人工合成甜味剂如阿斯巴甜应谨慎使用，特别是对某些敏感人群。
@@ -948,7 +951,7 @@ export default function IngredientsPage() {
                   </div>
                   
                   <div style={{ marginBottom: '1.5rem' }}>
-                    <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}>防腐剂</h4>
+                    <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}><a href="https://baike.baidu.com/item/%E9%98%B2%E8%85%90%E5%89%82?fromModule=lemma_search-box" target="_blank" rel="noopener noreferrer" style={{ color: '#059669', textDecoration: 'underline' }}>防腐剂</a></h4>
                     <p style={{ margin: 0, color: '#4b5563', lineHeight: 1.6, fontSize: '0.95rem' }}>
                       防腐剂用于延长食品保质期，抑制微生物生长。常见的防腐剂包括山梨酸钾、苯甲酸钠和亚硝酸盐等。
                       虽然在规定用量内使用通常安全，但某些防腐剂如亚硝酸盐可能与癌症风险相关，建议优先选择天然防腐方法保存的食品。
@@ -956,7 +959,7 @@ export default function IngredientsPage() {
                   </div>
                   
                   <div style={{ marginBottom: '1.5rem' }}>
-                    <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}>乳化剂</h4>
+                    <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}><a href="https://baike.baidu.com/item/%E4%B9%B3%E5%8C%96%E5%89%82?fromModule=lemma_search-box" target="_blank" rel="noopener noreferrer" style={{ color: '#059669', textDecoration: 'underline' }}>乳化剂</a></h4>
                     <p style={{ margin: 0, color: '#4b5563', lineHeight: 1.6, fontSize: '0.95rem' }}>
                       乳化剂帮助混合不相溶的成分，如油脂和水。天然乳化剂如卵磷脂安全性高，而人工合成的乳化剂如聚山梨酯80应适量使用。
                       长期大量摄入某些乳化剂可能影响肠道屏障功能，建议选择含天然乳化剂的食品。
@@ -964,7 +967,7 @@ export default function IngredientsPage() {
                   </div>
                   
                   <div style={{ marginBottom: '1.5rem' }}>
-                    <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}>油脂</h4>
+                    <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}><a href="https://baike.baidu.com/item/%E6%B2%B9%E8%84%82/781726" target="_blank" rel="noopener noreferrer" style={{ color: '#059669', textDecoration: 'underline' }}>油脂</a></h4>
                     <p style={{ margin: 0, color: '#4b5563', lineHeight: 1.6, fontSize: '0.95rem' }}>
                       食品加工中常用的油脂包括天然油脂和氢化植物油等。氢化植物油含有反式脂肪酸，应尽量避免。
                       选择食品时，应优先选择使用橄榄油、亚麻籽油等健康油脂的产品，减少饱和脂肪和反式脂肪的摄入。
@@ -972,7 +975,7 @@ export default function IngredientsPage() {
                   </div>
                   
                   <div style={{ marginBottom: '1.5rem' }}>
-                    <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}>色素</h4>
+                    <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}><a href="https://baike.baidu.com/item/%E8%89%B2%E7%B4%A0?fromModule=lemma_search-box" target="_blank" rel="noopener noreferrer" style={{ color: '#059669', textDecoration: 'underline' }}>色素</a></h4>
                     <p style={{ margin: 0, color: '#4b5563', lineHeight: 1.6, fontSize: '0.95rem' }}>
                       色素用于改善食品的外观和色泽。天然色素如焦糖色相对安全，而某些人工合成色素如二氧化钛可能存在健康风险。
                       建议选择使用天然色素或无人工色素的食品，特别是对儿童食品更应谨慎。
@@ -980,7 +983,7 @@ export default function IngredientsPage() {
                   </div>
                   
                   <div>
-                    <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}>调味剂</h4>
+                    <h4 style={{ marginBottom: '0.5rem', color: '#374151' }}><a href="https://baike.baidu.com/item/%E8%B0%83%E5%91%B3%E5%89%82/9651964" target="_blank" rel="noopener noreferrer" style={{ color: '#059669', textDecoration: 'underline' }}>调味剂</a></h4>
                     <p style={{ margin: 0, color: '#4b5563', lineHeight: 1.6, fontSize: '0.95rem' }}>
                       调味剂用于增强食品的味道，如谷氨酸钠（味精）。大多数调味剂在正常使用量下安全，但少数人可能对其敏感。
                       建议适量使用调味剂，培养对天然食物原味的适应，减少对人工调味的依赖。
