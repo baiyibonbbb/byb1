@@ -625,54 +625,19 @@ export default function IngredientsPage() {
                 flexWrap: 'wrap',
                 alignItems: 'center'
               }}>
-                {/* select元素移到左侧 */}
-                <div style={{ flex: '0 0 auto' }}>
-                  <select
-                    aria-label="选择配料分类"
-                    title="选择配料分类"
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    style={{
-                      padding: '0.75rem 2rem 0.75rem 1rem',
-                      border: '2px solid #d1d5db',
-                      borderRadius: '0.375rem',
-                      fontSize: '1rem',
-                      backgroundColor: 'white',
-                      outline: 'none',
-                      color: 'black',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease',
-                      appearance: 'none',
-                      backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"%234b5563\"%3E%3Cpath stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"/%3E%3C/svg%3E")',
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'right 0.75rem center',
-                      backgroundSize: '16px 16px',
-                      minWidth: '180px'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = '#059669';
-                      e.currentTarget.style.boxShadow = '0 0 0 3px rgba(5, 150, 105, 0.1)';
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!e.currentTarget.matches(':focus')) {
-                        e.currentTarget.style.borderColor = '#d1d5db';
-                        e.currentTarget.style.boxShadow = 'none';
-                      }
-                    }}
-                    onFocus={(e) => {
-                      e.currentTarget.style.borderColor = '#047857';
-                      e.currentTarget.style.boxShadow = '0 0 0 3px rgba(5, 150, 105, 0.2)';
-                    }}
-                    onBlur={(e) => {
-                      e.currentTarget.style.borderColor = '#d1d5db';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
-                  >
-                    <option value="all">所有分类</option>
-                    {categories.filter(cat => cat !== 'all').map(category => (
-                      <option key={category} value={category}>{category}</option>
-                    ))}
-                  </select>
+                {/* 替换select为显示"搜索框"文本的div */}
+                <div style={{ 
+                  flex: '0 0 auto',
+                  padding: '0.75rem 2rem 0.75rem 1rem',
+                  border: '2px solid #d1d5db',
+                  borderRadius: '0.375rem',
+                  fontSize: '1rem',
+                  backgroundColor: 'white',
+                  color: 'black',
+                  minWidth: '180px',
+                  textAlign: 'center'
+                }}>
+                  搜索框
                 </div>
                 
                 {/* input元素移到右侧并补齐剩余空间 */}
