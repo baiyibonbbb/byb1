@@ -31,18 +31,10 @@ const upload = multer({ storage: storage });
 // 提供静态文件
 app.use(express.static(__dirname));
 
-// 上传密码（可以根据需要修改）
-const UPLOAD_PASSWORD = 'admin123';
-
 // 上传文件
 app.post('/upload', upload.single('file'), (req, res) => {
     if (!req.file) {
         return res.json({ success: false, message: '请选择文件' });
-    }
-    
-    const password = req.body.password;
-    if (!password || password !== UPLOAD_PASSWORD) {
-        return res.json({ success: false, message: '上传密码错误' });
     }
     
     res.json({ success: true, message: '文件上传成功' });
@@ -64,7 +56,7 @@ app.get('/files', (req, res) => {
 
 // 下载文件
 app.get('/download/:filename', (req, res) => {
-    const filename = req.params.filename;
+    const filename = decodeURIComponent(req.params.filename);
     const filePath = path.join(uploadsDir, filename);
     
     if (fs.existsSync(filePath)) {
@@ -76,13 +68,8 @@ app.get('/download/:filename', (req, res) => {
 
 // 删除文件
 app.delete('/delete/:filename', (req, res) => {
-    const filename = req.params.filename;
+    const filename = decodeURIComponent(req.params.filename);
     const filePath = path.join(uploadsDir, filename);
-    
-    const password = req.body.password;
-    if (!password || password !== UPLOAD_PASSWORD) {
-        return res.json({ success: false, message: '删除密码错误' });
-    }
     
     if (fs.existsSync(filePath)) {
         fs.unlink(filePath, (err) => {
