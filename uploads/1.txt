@@ -1,0 +1,33 @@
+HCURSOR CMFCApplication1Dlg::OnQueryDragIcon()
+{
+	return static_cast<HCURSOR>(m_hIcon);
+}
+
+
+void CMFCApplication1Dlg::OnBnClickedButton1()
+{
+	//006A9EC0+768+5560
+	HWND 窗口句柄 = ::FindWindow(NULL, L"植物大战僵尸杂交版v2.5.1");
+	DWORD pid;
+	GetWindowThreadProcessId(窗口句柄, &pid);
+	if (pid == NULL) {
+		return;
+	}
+	HANDLE 进程句柄 = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
+	if (进程句柄 == NULL) {
+		return;
+	}
+	int 阳光;
+	int 要修改的阳光 = 99999;
+	ReadProcessMemory(进程句柄, (LPCVOID)0x006A9EC0, &阳光, sizeof(阳光), NULL);
+	ReadProcessMemory(进程句柄, (LPCVOID)(阳光+0x768), &阳光, sizeof(阳光), NULL);
+	WriteProcessMemory(进程句柄, (LPVOID)(阳光 + 0x5560), &要修改的阳光, sizeof(要修改的阳光), NULL);
+	CloseHandle(进程句柄);
+
+}
+
+
+00489825 - 8B 86 60550000  - mov eax,[esi+00005560] <<ESI=30C28980
+0087640C - 8B 80 68070000  - mov eax,[eax+00000768] <<
+008B1200 - 8B 1D C09E6A00  - mov ebx,[PlantsVsZombies.exe+2A9EC0] 
+006A9EC0+768+5560

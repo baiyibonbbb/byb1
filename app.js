@@ -31,6 +31,17 @@ const upload = multer({ storage: storage });
 // 提供静态文件
 app.use(express.static(__dirname));
 
+// 添加CORS头
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+    next();
+});
+
 // 上传文件
 app.post('/upload', upload.single('file'), (req, res) => {
     if (!req.file) {
