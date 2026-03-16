@@ -28,9 +28,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// 提供静态文件
-app.use(express.static(__dirname));
-
 // 添加CORS头
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -41,6 +38,9 @@ app.use((req, res, next) => {
     }
     next();
 });
+
+// 提供静态文件
+app.use(express.static(__dirname));
 
 // 上传文件
 app.post('/upload', upload.single('file'), (req, res) => {
