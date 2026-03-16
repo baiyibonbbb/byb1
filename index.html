@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件共享平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        
+        .upload-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .upload-section h2 {
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+        
+        .file-input {
+            display: block;
+            margin: 0 auto 20px;
+            padding: 10px;
+        }
+        
+        .upload-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .files-section {
+            margin-top: 30px;
+        }
+        
+        .files-section h2 {
+            margin-bottom: 20px;
+            color: #34495e;
+        }
+        
+        .file-list {
+            list-style: none;
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .file-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .download-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .download-btn:hover {
+            background-color: #229954;
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>文件共享平台</h1>
+        
+        <!-- 上传区域 -->
+        <div class="upload-section">
+            <h2>上传文件</h2>
+            <form id="upload-form">
+                <input type="password" id="upload-password" placeholder="请输入上传密码" class="file-input" required>
+                <input type="file" id="file-input" class="file-input" required>
+                <button type="submit" class="upload-btn">上传文件</button>
+            </form>
+            <div id="message" class="message" style="display: none;"></div>
+        </div>
+        
+        <!-- 文件列表 -->
+        <div class="files-section">
+            <h2>可下载文件</h2>
+            <ul id="file-list" class="file-list">
+                <!-- 文件列表将通过JavaScript动态生成 -->
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // 上传文件
+        document.getElementById('upload-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('file-input');
+            const passwordInput = document.getElementById('upload-password');
+            const message = document.getElementById('message');
+            
+            if (!fileInput.files.length) {
+                showMessage('请选择一个文件', 'error');
+                return;
+            }
+            
+            if (!passwordInput.value) {
+                showMessage('请输入上传密码', 'error');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+            formData.append('password', passwordInput.value);
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('文件上传成功！', 'success');
+                    fileInput.value = '';
+                    passwordInput.value = '';
+                    loadFiles();
+                } else {
+                    showMessage('上传失败：' + result.message, 'error');
+                }
+            } catch (error) {
+                showMessage('上传失败：网络错误', 'error');
+                console.error('上传错误:', error);
+            }
+        });
+        
+        // 显示消息
+        function showMessage(text, type) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
+            
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000);
+        }
+        
+        // 加载文件列表
+        async function loadFiles() {
+            try {
+                const response = await fetch('/files');
+                const files = await response.json();
+                const fileList = document.getElementById('file-list');
+                
+                fileList.innerHTML = '';
+                
+                if (files.length === 0) {
+                    fileList.innerHTML = '<li class="file-item">暂无文件</li>';
+                    return;
+                }
+                
+                files.forEach(file => {
+                    const li = document.createElement('li');
+                    li.className = 'file-item';
+                    li.innerHTML = `
+                        <span>${file.name}</span>
+                        <div>
+                            <a href="/download/${file.name}" class="download-btn">下载</a>
+                            <button class="delete-btn" data-filename="${file.name}">删除</button>
+                        </div>
+                    `;
+                    fileList.appendChild(li);
+                });
+                
+                // 添加删除按钮点击事件
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', async function() {
+                        const filename = this.getAttribute('data-filename');
+                        const password = prompt('请输入删除密码：');
+                        
+                        if (!password) {
+                            return;
+                        }
+                        
+                        if (confirm('确定要删除这个文件吗？')) {
+                            try {
+                                const response = await fetch(`/delete/${filename}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ password: password })
+                                });
+                                
+                                const result = await response.json();
+                                
+                                if (result.success) {
+                                    showMessage('文件删除成功！', 'success');
+                                    loadFiles();
+                                } else {
+                                    showMessage('删除失败：' + result.message, 'error');
+                                }
+                            } catch (error) {
+                                showMessage('删除失败：网络错误', 'error');
+                                console.error('删除错误:', error);
+                            }
+                        }
+                    });
+                });
+            } catch (error) {
+                console.error('加载文件列表错误:', error);
+            }
+        }
+        
+        // 页面加载时加载文件列表
+        window.onload = loadFiles;
+    </script>
+</body>
+</html>
