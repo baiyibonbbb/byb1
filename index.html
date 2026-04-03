@@ -198,7 +198,6 @@
 
             const xhr = new XMLHttpRequest();
             xhr.open('POST', '/upload', true);
-            xhr.withCredentials = true;
 
             xhr.upload.onprogress = function(event) {
                 if (event.lengthComputable) {
