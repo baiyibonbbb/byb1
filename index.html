@@ -156,6 +156,10 @@
                 <button type="submit" class="upload-btn">上传文件</button>
             </form>
             <div id="message" class="message" style="display: none;"></div>
+            <div id="progress-container" style="display: none; margin-top:10px;">
+                <div id="progress-bar" style="height:10px; background:#3498db; width:0%; border-radius:5px;"></div>
+                <div id="progress-percent" style="margin-top:6px; font-size:14px; color:#333;">0%</div>
+            </div>
         </div>
         
         <!-- 文件列表 -->
@@ -168,39 +172,74 @@
     </div>
     
     <script>
-        // 上传文件
-        document.getElementById('upload-form').addEventListener('submit', async (e) => {
+        // 上传文件（使用 XMLHttpRequest 以支持上传进度）
+        document.getElementById('upload-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const fileInput = document.getElementById('file-input');
-            const message = document.getElementById('message');
-            
+            const progressContainer = document.getElementById('progress-container');
+            const progressBar = document.getElementById('progress-bar');
+            const progressPercent = document.getElementById('progress-percent');
+            const uploadBtn = document.querySelector('.upload-btn');
+
             if (!fileInput.files.length) {
                 showMessage('请选择一个文件', 'error');
                 return;
             }
-            
+
+            const file = fileInput.files[0];
             const formData = new FormData();
-            formData.append('file', fileInput.files[0]);
-            
-            try {
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showMessage('文件上传成功！', 'success');
-                    fileInput.value = '';
-                    loadFiles();
-                } else {
-                    showMessage('上传失败：' + result.message, 'error');
+            formData.append('file', file);
+
+            uploadBtn.disabled = true;
+            uploadBtn.textContent = '上传中...';
+            progressContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressPercent.textContent = '0%';
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload', true);
+            xhr.withCredentials = true;
+
+            xhr.upload.onprogress = function(event) {
+                if (event.lengthComputable) {
+                    const percent = Math.round((event.loaded / event.total) * 100);
+                    progressBar.style.width = percent + '%';
+                    progressPercent.textContent = percent + '%';
                 }
-            } catch (error) {
+            };
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    uploadBtn.disabled = false;
+                    uploadBtn.textContent = '上传文件';
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        try {
+                            const result = JSON.parse(xhr.responseText || '{}');
+                            if (result.success) {
+                                showMessage('文件上传成功！', 'success');
+                                fileInput.value = '';
+                                progressContainer.style.display = 'none';
+                                loadFiles();
+                            } else {
+                                showMessage('上传失败：' + (result.message || '未知错误'), 'error');
+                            }
+                        } catch (err) {
+                            showMessage('上传失败：无法解析服务器响应', 'error');
+                        }
+                    } else {
+                        const text = xhr.responseText || xhr.statusText || '';
+                        showMessage('上传失败：' + xhr.status + ' ' + text, 'error');
+                    }
+                }
+            };
+
+            xhr.onerror = function() {
+                uploadBtn.disabled = false;
+                uploadBtn.textContent = '上传文件';
                 showMessage('上传失败：网络错误', 'error');
-                console.error('上传错误:', error);
-            }
+            };
+
+            xhr.send(formData);
         });
         
         // 显示消息
