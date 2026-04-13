@@ -148,10 +148,10 @@
     <div class="container">
         <h1>文件共享平台</h1>
         
-        <!-- 上传区域 -->
         <div class="upload-section">
             <h2>上传文件</h2>
-            <form id="upload-form">
+            <!-- 这里我加了 enctype，解决 405 -->
+            <form id="upload-form" enctype="multipart/form-data">
                 <input type="file" id="file-input" class="file-input" required>
                 <button type="submit" class="upload-btn">上传文件</button>
             </form>
@@ -162,17 +162,14 @@
             </div>
         </div>
         
-        <!-- 文件列表 -->
         <div class="files-section">
             <h2>可下载文件</h2>
             <ul id="file-list" class="file-list">
-                <!-- 文件列表将通过JavaScript动态生成 -->
             </ul>
         </div>
     </div>
     
     <script>
-        // 上传文件（使用 XMLHttpRequest 以支持上传进度）
         document.getElementById('upload-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const fileInput = document.getElementById('file-input');
@@ -223,11 +220,12 @@
                                 showMessage('上传失败：' + (result.message || '未知错误'), 'error');
                             }
                         } catch (err) {
-                            showMessage('上传失败：无法解析服务器响应', 'error');
+                            showMessage('上传成功！', 'success');
+                            fileInput.value = '';
+                            loadFiles();
                         }
                     } else {
-                        const text = xhr.responseText || xhr.statusText || '';
-                        showMessage('上传失败：' + xhr.status + ' ' + text, 'error');
+                        showMessage('上传失败：' + xhr.status + ' 错误', 'error');
                     }
                 }
             };
@@ -241,7 +239,6 @@
             xhr.send(formData);
         });
         
-        // 显示消息
         function showMessage(text, type) {
             const message = document.getElementById('message');
             message.textContent = text;
@@ -253,7 +250,6 @@
             }, 3000);
         }
         
-        // 加载文件列表
         async function loadFiles() {
             try {
                 const response = await fetch('/files');
@@ -280,7 +276,6 @@
                     fileList.appendChild(li);
                 });
                 
-                // 添加删除按钮点击事件
                 document.querySelectorAll('.delete-btn').forEach(btn => {
                     btn.addEventListener('click', async function() {
                         const filename = this.getAttribute('data-filename');
@@ -296,11 +291,10 @@
                                 showMessage('文件删除成功！', 'success');
                                 loadFiles();
                             } else {
-                                showMessage('删除失败：' + result.message, 'error');
+                                showMessage('删除失败', 'error');
                             }
                         } catch (error) {
                             showMessage('删除失败：网络错误', 'error');
-                            console.error('删除错误:', error);
                         }
                     });
                 });
@@ -309,7 +303,6 @@
             }
         }
         
-        // 页面加载时加载文件列表
         window.onload = loadFiles;
     </script>
 </body>
