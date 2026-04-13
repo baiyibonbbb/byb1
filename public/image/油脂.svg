@@ -1,6 +1,0 @@
-<svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="80" height="80" rx="6" fill="#059669"/>
-  <path d="M30 35C30 32.7909 31.7909 31 34 31H46C48.2091 31 50 32.7909 50 35V45C50 47.2091 48.2091 49 46 49H34C31.7909 49 30 47.2091 30 45V35Z" fill="white" fill-opacity="0.8"/>
-  <path d="M32 52C32 51.4477 32.4477 51 33 51H47C47.5523 51 48 51.4477 48 52V56C48 56.5523 47.5523 57 47 57H33C32.4477 57 32 56.5523 32 56V52Z" fill="white"/>
-  <text x="40" y="67" fill="white" font-size="12" font-weight="bold" text-anchor="middle">油</text>
-</svg>

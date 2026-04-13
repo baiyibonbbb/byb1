@@ -49,9 +49,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// 提供静态文件
-app.use(express.static(__dirname));
-
 // 上传文件
 app.post('/upload', upload.single('file'), (req, res) => {
     if (!req.file) {
@@ -103,6 +100,9 @@ app.delete('/delete/:filename', (req, res) => {
         res.json({ success: false, message: '文件不存在' });
     }
 });
+
+// 提供静态文件（放在 API 路由之后，避免 /files 被静态文件 404 覆盖）
+app.use(express.static(__dirname, { index: 'index.html', extensions: ['html'] }));
 
 // 启动服务器
 app.listen(port, '0.0.0.0', () => {
